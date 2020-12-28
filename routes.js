@@ -22,11 +22,18 @@ router.post('/webhook', async function(req, res) {
     try {
         const emails = await EMAIL.webhook.fetch(req.body);
         for (const email of emails) {
-            if (email.from.address == CONFIG.email) continue;
+            const address = email.from.address;
+            if (address == CONFIG.email) continue;
             if (email.subject == 'LOGIN') {
-                const address = email.from.address;
                 const data = await CONN.login(address);
-                await EMAIL.mailer.sendMail(address, 'Maia Login Link', `<div>Click <a href='${data.url}'>here</a> to login</div>`);
+                if (data.url) await EMAIL.mailer.sendMail(address, 'Maia Login Link', `<div>Click <a href='${data.url}'>here</a> to login</div>`);
+                else console.log(data);
+                return;
+            }
+            if (email.subject == 'LOGOUT') {
+                const data = await CONN.logout(address);
+                console.log(data);
+                await EMAIL.mailer.sendMail(address, 'Maia Logout', `<div>You signed out of the Maia AI Calendar Assistant</div>`);
                 return;
             }
         }
