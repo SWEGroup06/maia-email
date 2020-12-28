@@ -20,6 +20,7 @@
     "express": "^4.17.1",
     "gmailpush": "^1.0.4",
     "html-to-text": "^6.0.0",
+    "nodemailer": "^6.4.17",
     "qs": "^6.9.4"
   }
 }
