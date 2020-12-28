@@ -17,5 +17,5 @@ app.use('/', require('./routes.js'));
 
 // Start Server
 app.listen(PORT, () => {
-    console.log(`EMAIL Server hosted on: ${CONFIG.serverURL}`);
+    console.log(`EMAIL Server hosted on: ${CONFIG.url}`);
 });

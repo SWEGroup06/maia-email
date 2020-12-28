@@ -1,9 +1,12 @@
+// Config
+const CONFIG = require('./config.js');
 
 // Modules
 const express = require('express');
 
 // Libraries
 const EMAIL = require('./lib/email/index.js');
+const CONN = require('./lib/connection.js');
 
 // Setup router
 const router = express.Router();
@@ -14,16 +17,24 @@ router.get('/', function(_, res) {
 });
 
 // Gmail Pub/Sub callback
-router.post('/webhook', function(req, res) {
+router.post('/webhook', async function(req, res) {
     res.sendStatus(200);
-    EMAIL.webhook.fetch(req.body).then(console.log).catch(console.error);
-});
-
-// Gmail Pub/Sub callback
-router.get('/send', function(req, res) {
-    EMAIL.mailer.sendMail('kpal81xd@gmail.com', 'LOGIN REQUIRED', 'link goes here')
-        .then(() => res.status(200).send('ok'))
-        .catch(() => res.status(500).send('Internal Server Error'));
+    try {
+        const emails = await EMAIL.webhook.fetch(req.body);
+        for (const email of emails) {
+            if (email.from.address == CONFIG.email) continue;
+            if (email.subject == 'LOGIN') {
+                const address = email.from.address;
+                const data = await CONN.login(address);
+                await EMAIL.mailer.sendMail(address, 'Maia Login Link', `<div>Click <a href='${data.url}'>here</a> to login</div>`);
+                return;
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+    
 });
 
 module.exports = router;
