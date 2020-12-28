@@ -4,6 +4,7 @@ require('dotenv').config();
 // Modules
 const express = require('express');
 const Gmailpush = require('gmailpush');
+const {htmlToText} = require('html-to-text');
 
 const gmailpush = new Gmailpush({
     clientId: process.env.CLIENT_ID,
@@ -41,7 +42,8 @@ app.post('/end', async function(req, res) {
                 from: m.from,
                 to: m.to,
                 subject: m.subject,
-                date: m.date
+                date: m.date,
+                body: htmlToText(m.bodyHtml)
             }
         }))
     }).catch(console.error);
