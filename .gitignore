@@ -11,3 +11,7 @@
 node_modules
 .DS_Store
 package-lock.json
+
+# Misc
+creds.json
+gmailpush_history.json
