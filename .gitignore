@@ -1,0 +1,13 @@
+# Environments
+.env
+
+# VSCode
+.vscode
+
+# PyCharm
+.idea
+
+# Node
+node_modules
+.DS_Store
+package-lock.json

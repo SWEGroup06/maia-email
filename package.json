@@ -1,0 +1,25 @@
+{
+  "name": "maia-email",
+  "version": "1.0.0",
+  "description": "Email client for AI Calendar Assitant",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js --dev",
+    "prod": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SWEGroup06/maia-email.git"
+  },
+  "keywords": [],
+  "author": "SWEGroup06",
+  "license": "Proprietary",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "html-to-text": "^6.0.0",
+    "imap": "^0.8.19",
+    "qs": "^6.9.4"
+  }
+}
