@@ -27,6 +27,7 @@ router.post('/webhook', async function(req, res) {
             if (email.subject == 'LOGIN') {
                 const data = await CONN.login(address);
                 if (data.url) await EMAIL.mailer.sendMail(address, 'Maia Login Link', `<div>Click <a href='${data.url}'>here</a> to login</div>`);
+                else if (data.exists) await EMAIL.mailer.sendMail(address, 'Maia Login Response', `<div>You are already signed in</div>`);
                 else console.log(data);
                 return;
             }
@@ -39,7 +40,6 @@ router.post('/webhook', async function(req, res) {
         }
     } catch (err) {
         console.error(err);
-        res.status(500).send('Internal Server Error');
     }
     
 });
