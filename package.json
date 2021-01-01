@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node . --dev",
     "prod": "node .",
-    "lint": "eslint . --fix",
-    "prettier": "prettier --write \"**/*.js\""
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",
