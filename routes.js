@@ -46,6 +46,10 @@ router.post("/webhook", function (req, res) {
           ),
         };
 
+        console.log("email.body**********");
+        console.log(email.body);
+        console.log("***********************");
+
         // Handle specific cases
         if (["LOGIN", "LOGOUT", "HELP"].includes(email.subject)) {
           await COMMANDS[email.subject.toLowerCase()].action(event);
