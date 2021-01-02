@@ -9,6 +9,8 @@ const EMAIL = require("./lib/email/index.js");
 const CONN = require("./lib/connection.js");
 const COMMANDS = require("./lib/commands.js")(CONN, EMAIL);
 
+const EmailReplyParser = require("email-reply-parser");
+
 // Setup router
 // eslint-disable-next-line new-cap
 const router = express.Router();
