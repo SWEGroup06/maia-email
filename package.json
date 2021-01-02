@@ -2,7 +2,7 @@
   "name": "maia-email",
   "version": "1.0.0",
   "description": "Email client for AI Calendar Assitant",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node . --dev",
     "prod": "node .",
@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "gmailpush": "^1.0.4",
     "html-to-text": "^6.0.0",
+    "luxon": "^1.25.0",
     "nodemailer": "^6.4.17"
   },
   "devDependencies": {
