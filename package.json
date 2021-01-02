@@ -18,6 +18,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
+    "email-reply-parser": "^1.2.3",
     "express": "^4.17.1",
     "gmailpush": "^1.0.4",
     "html-to-text": "^6.0.0",
