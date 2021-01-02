@@ -62,9 +62,10 @@ router.post("/webhook", function (req, res) {
           (text) => text.split("\n\n")[0],
           (text) => text.split("\n\n").slice(1, -1).join(" "),
         ];
-        const text = formatters[returns.length]
-          ? formatters[returns.length](parsed)
-          : formatters[0](parsed);
+        const text =
+          returns && returns.length && formatters[returns.length]
+            ? formatters[returns.length](parsed)
+            : formatters[0](parsed);
 
         // Use NLP to determine command
         const res = await CONN.nlp(text);
