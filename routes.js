@@ -50,11 +50,23 @@ router.post("/webhook", function (req, res) {
           return;
         }
 
+        // Ensures that only the latest message is considered, ignoring any
+        // messages in the thread.
+        const latestMessage = new EmailReplyParser().parseReply(email.body);
+
+        console.log("latestMessage**********");
+        console.log(latestMessage);
+        console.log("***********************");
+
         // Format body removing first and last lines and concatenating into one line
-        const parsed = email.body
+        const parsed = latestMessage
           .trim()
           .replace(/\n\n/g, "\n")
           .replace(/\n\s\n/g, "\n\n");
+
+        console.log("parsed**********");
+        console.log(parsed);
+        console.log("***********************");
 
         const returns = parsed.match(/\n\n/g);
         const formatters = [
@@ -62,10 +74,17 @@ router.post("/webhook", function (req, res) {
           (text) => text.split("\n\n")[0],
           (text) => text.split("\n\n").slice(1, -1).join(" "),
         ];
-        const text =
-          returns && returns.length && formatters[returns.length]
-            ? formatters[returns.length](parsed)
-            : formatters[0](parsed);
+
+        let text;
+        if (returns && returns.length && formatters[returns.length]) {
+          text = formatters[returns.length](parsed);
+        } else {
+          text = formatters[0](parsed);
+        }
+
+        console.log("text**********");
+        console.log(text);
+        console.log("***********************");
 
         // Use NLP to determine command
         const res = await CONN.nlp(text);
