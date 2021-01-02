@@ -24,17 +24,8 @@ router.post("/webhook", function (req, res) {
 
   // Sometimes the email isnt actually in the inbox yet so wait for 500 ms before fetching mail
   setTimeout(async function () {
-    let emails;
-    let attempt = 0;
-    while ((!emails || !emails.length) && attempt < CONFIG.MAX_RETRIES) {
-      try {
-        emails = await EMAIL.webhook.fetch(req.body);
-        break;
-      } catch {
-        attempt++;
-      }
-    }
     try {
+      const emails = await EMAIL.webhook.fetch(req.body);
       for (const email of emails) {
         const address = email.from.address;
         if (address == CONFIG.email) continue;
