@@ -51,14 +51,20 @@ router.post("/webhook", function (req, res) {
         }
 
         // Format body removing first and last lines and concatenating into one line
-        const formatted = email.body
+        const parsed = email.body
           .trim()
           .replace(/\n\n/g, "\n")
           .replace(/\n\s\n/g, "\n\n");
 
-        const text = formatted.includes("\n\n")
-          ? formatted.split("\n\n").slice(1, -1).join(" ")
-          : formatted;
+        const returns = parsed.match(/\n\n/g);
+        const formatters = [
+          (text) => text,
+          (text) => text.split("\n\n")[0],
+          (text) => text.split("\n\n").slice(1, -1).join(" "),
+        ];
+        const text = formatters[returns.length]
+          ? formatters[returns.length](parsed)
+          : formatters[0](parsed);
 
         // Use NLP to determine command
         const res = await CONN.nlp(text);
