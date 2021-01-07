@@ -46,10 +46,6 @@ router.post("/webhook", function (req, res) {
           ),
         };
 
-        console.log("email.body**********");
-        console.log(email.body);
-        console.log("***********************");
-
         // Handle specific cases
         if (["LOGIN", "LOGOUT", "HELP"].includes(email.subject)) {
           await COMMANDS[email.subject.toLowerCase()].action(event);
@@ -60,19 +56,11 @@ router.post("/webhook", function (req, res) {
         // messages in the thread.
         const latestMessage = new EmailReplyParser().parseReply(email.body);
 
-        console.log("latestMessage**********");
-        console.log(latestMessage);
-        console.log("***********************");
-
         // Format body removing first and last lines and concatenating into one line
         const parsed = latestMessage
           .trim()
           .replace(/\n\n/g, "\n")
           .replace(/\n\s\n/g, "\n\n");
-
-        console.log("parsed**********");
-        console.log(parsed);
-        console.log("***********************");
 
         const returns = parsed.match(/\n\n/g);
         const formatters = [
@@ -88,15 +76,11 @@ router.post("/webhook", function (req, res) {
           text = formatters[0](parsed);
         }
 
-        console.log("text**********");
-        console.log(text);
-        console.log("***********************");
-
         // Use NLP to determine command
         const res = await CONN.nlp(text);
         if (res.error) throw new Error(res.error);
         if (res.type === "unknown") {
-          console.log("Invalid Command");
+          console.error("INVALID COMMAND");
           await EMAIL.mailer.sendMail(
             address,
             "Maia Calendar: Error",
@@ -108,8 +92,10 @@ router.post("/webhook", function (req, res) {
         const cmd = COMMANDS[res.type];
         if (cmd && cmd.action) await cmd.action(event, res);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      // Any other type of error
+      const msg = "REST webhook Error: " + err.message;
+      console.error(msg);
     }
   }, 500);
 });
