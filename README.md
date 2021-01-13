@@ -18,7 +18,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Local (Debugging)
 ```
-1. git clone https://github.com/SWEGroup06/maia-backend.git
+1. git clone https://github.com/SWEGroup06/maia-email.git
 2. Add `.env` to the root directory
 3. Run `npm start` to start the beta bot
 ```
